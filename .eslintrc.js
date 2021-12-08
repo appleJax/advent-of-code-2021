@@ -9,7 +9,6 @@ module.exports = {
     "yarn.lock",
     "**/*.log",
     "**/*.json",
-    "**/*.css",
     "**/*.md",
     "**/*.mp4",
   ],
@@ -36,7 +35,7 @@ module.exports = {
     "import/no-extraneous-dependencies": [
       "error",
       {
-        devDependencies: ["jest-setup.ts", "**/*.test.ts", "**/*.spec.ts"],
+        devDependencies: ["**/*.spec.ts"],
       },
     ],
   },
