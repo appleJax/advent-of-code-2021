@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    browser: true,
     es2021: true,
     jest: true,
   },
@@ -17,28 +16,18 @@ module.exports = {
   settings: {
     "import/resolver": {
       node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"],
+        extensions: [".js", ".ts"],
       },
     },
   },
-  extends: [
-    "plugin:react/recommended",
-    "airbnb",
-    "prettier",
-    "plugin:jest-dom/recommended",
-    "plugin:cypress/recommended",
-  ],
+  extends: ["airbnb", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "prettier", "@typescript-eslint", "jest-dom"],
+  plugins: ["prettier", "@typescript-eslint"],
   rules: {
-    "react/jsx-props-no-spreading": "off",
     "prettier/prettier": ["error"],
     "react/jsx-filename-extension": "off",
     "import/extensions": "off",
@@ -47,14 +36,7 @@ module.exports = {
     "import/no-extraneous-dependencies": [
       "error",
       {
-        devDependencies: [
-          "cypress/support/commands.js",
-          "jest-setup.ts",
-          "**/*.test.ts",
-          "**/*.spec.ts",
-          "**/*.test.tsx",
-          "**/*.spec.tsx",
-        ],
+        devDependencies: ["jest-setup.ts", "**/*.test.ts", "**/*.spec.ts"],
       },
     ],
   },
