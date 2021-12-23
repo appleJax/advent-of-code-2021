@@ -1,3 +1,5 @@
+import { Node } from "./Node";
+
 export function solutionA(report: string[]) {
   if (report.length === 0) {
     return 0;
@@ -33,6 +35,11 @@ export function solutionB(report: string[]) {
   if (report.length === 0) {
     return 0;
   }
+
+  const digitTree = report.reduce((tree, line) => {
+    tree.insert(line);
+    return tree;
+  }, new Node("root"));
 
   return 0;
 }
