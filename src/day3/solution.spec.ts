@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs";
-import { solutionA, solutionB } from "./solution";
+import { getRating, solutionA, solutionB } from "./solution";
+import { Node } from "./Node";
 
 const officialInput = fs
   .readFileSync(path.resolve(__dirname, "input.txt"), "utf-8")
@@ -23,20 +24,33 @@ describe("Day 3 - Part 1", () => {
   });
 
   test("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(42);
+    expect(solutionA(officialInput)).toBe(2003336);
   });
 });
 
 describe("Day 3 - Part 2", () => {
-  xtest("degenerate case", () => {
+  test("ratings", () => {
+    const tree = new Node("root");
+    tree.insert("100");
+    tree.insert("101");
+    tree.insert("011");
+
+    expect(getRating(tree, "OXYGEN_GENERATOR")).toEqual(5);
+    expect(getRating(tree, "CO2_SCRUBBER")).toEqual(3);
+  });
+
+  test("degenerate case", () => {
     expect(solutionB([])).toBe(0);
+    expect(solutionB(["010"])).toBe(4);
   });
 
-  xtest("simple case", () => {
-    expect(solutionB([])).toBe(false);
+  test("simple case", () => {
+    expect(solutionB(["100", "101", "011"])).toBe(15);
+    expect(solutionB(["100", "101", "011", "001"])).toBe(5);
+    expect(solutionB(["100", "101", "011", "001", "110", "010"])).toBe(5);
   });
 
-  xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(42);
+  test("Official Solution - Part 2", () => {
+    expect(solutionB(officialInput)).toBe(1877139);
   });
 });

@@ -41,5 +41,40 @@ export function solutionB(report: string[]) {
     return tree;
   }, new Node("root"));
 
-  return 0;
+  const ogRating = getRating(digitTree, "OXYGEN_GENERATOR");
+  const co2Rating = getRating(digitTree, "CO2_SCRUBBER");
+
+  return ogRating * co2Rating;
+}
+
+type Rating = "OXYGEN_GENERATOR" | "CO2_SCRUBBER";
+
+export function getRating(tree: Node, ratingType: Rating) {
+  let rating = "";
+  let found = false;
+  let node = tree;
+
+  while (!found) {
+    const onlyZero = node.left && !node.right;
+    let shouldUseZero = false;
+
+    if (node.left && node.right) {
+      shouldUseZero =
+        ratingType === "OXYGEN_GENERATOR"
+          ? node.left.count > node.right.count
+          : node.left.count <= node.right.count;
+    }
+
+    if (onlyZero || shouldUseZero) {
+      rating += "0";
+      node = node.left!;
+    } else if (node.right) {
+      rating += "1";
+      node = node.right;
+    } else {
+      found = true;
+    }
+  }
+
+  return parseInt(rating, 2);
 }
