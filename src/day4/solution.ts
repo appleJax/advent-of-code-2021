@@ -1,13 +1,26 @@
 type DrawnIndexes = Record<number, number>;
 
-export function solutionA(input: string) {
+type WinnerOptions = {
+  winner: "FIRST" | "LAST";
+};
+
+const defaultOptions = {
+  winner: "FIRST" as const,
+};
+
+export function solution(
+  input: string,
+  options: WinnerOptions = defaultOptions
+) {
   const { boards, drawnIndexes, drawnNums } = parseInput(input);
   const getWinningIndex = winningIndexFactory(drawnIndexes);
 
   try {
     const winningIndexes = boards.map(getWinningIndex);
-    const { winningIndex, winningBoardIndex } =
-      getOverallWinner(winningIndexes);
+    const { winningIndex, winningBoardIndex } = getOverallWinner(
+      winningIndexes,
+      options
+    );
 
     if (winningIndex === Infinity) {
       return 0;
@@ -22,10 +35,6 @@ export function solutionA(input: string) {
   } catch {
     return 0;
   }
-}
-
-export function solutionB(input: string) {
-  return 0;
 }
 
 export function parseInput(input: string) {
@@ -100,10 +109,21 @@ export function getScore({
   return sumOfUndrawnNums * drawnNums[winningIndex];
 }
 
-export function getOverallWinner(winningIndexes: number[]) {
+export function getOverallWinner(
+  winningIndexes: number[],
+  options: WinnerOptions = defaultOptions
+) {
+  const defaultWinningIndex = options.winner === "FIRST" ? Infinity : -Infinity;
+
   return winningIndexes.reduce(
     (result, boardWinningIndex, index) => {
-      if (boardWinningIndex < result.winningIndex) {
+      const shouldUpdateFirst =
+        options.winner === "FIRST" && boardWinningIndex < result.winningIndex;
+      const shouldUpdateLast =
+        options.winner === "LAST" && boardWinningIndex > result.winningIndex;
+      const shouldUpdateWinner = shouldUpdateFirst || shouldUpdateLast;
+
+      if (shouldUpdateWinner) {
         return {
           winningIndex: boardWinningIndex,
           winningBoardIndex: index,
@@ -111,6 +131,6 @@ export function getOverallWinner(winningIndexes: number[]) {
       }
       return result;
     },
-    { winningIndex: Infinity, winningBoardIndex: Infinity }
+    { winningIndex: defaultWinningIndex, winningBoardIndex: Infinity }
   );
 }

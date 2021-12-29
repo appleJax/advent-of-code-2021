@@ -4,8 +4,7 @@ import {
   getScore,
   winningIndexFactory,
   parseInput,
-  solutionA,
-  solutionB,
+  solution,
   getOverallWinner,
 } from "./solution";
 
@@ -79,9 +78,16 @@ describe("helpers", () => {
   });
 
   test("getOverallWinner", () => {
-    expect(getOverallWinner([100, 200, 50, 300])).toEqual({
+    expect(getOverallWinner([100, 300, 50, 200])).toEqual({
       winningIndex: 50,
       winningBoardIndex: 2,
+    });
+  });
+
+  test("getOverallWinner - last", () => {
+    expect(getOverallWinner([100, 300, 50, 200], { winner: "LAST" })).toEqual({
+      winningIndex: 300,
+      winningBoardIndex: 1,
     });
   });
 
@@ -110,7 +116,7 @@ describe("helpers", () => {
 
 describe("Day 4 - Part 1", () => {
   test("degenerate case", () => {
-    expect(solutionA("")).toBe(0);
+    expect(solution("")).toBe(0);
 
     const noWinner = `1,2,3,4,100
 
@@ -120,7 +126,7 @@ describe("Day 4 - Part 1", () => {
 16 17 18 19 20
 21 22 23 24 25`;
 
-    expect(solutionA(noWinner)).toBe(0);
+    expect(solution(noWinner)).toBe(0);
   });
 
   test("simple case", () => {
@@ -132,24 +138,16 @@ describe("Day 4 - Part 1", () => {
 16 17 18 19 20
 21 22 23 24 25`;
 
-    expect(solutionA(input)).toBe(210 * 25);
+    expect(solution(input)).toBe(210 * 25);
   });
 
   test("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(49860);
+    expect(solution(officialInput)).toBe(49860);
   });
 });
 
 describe("Day 4 - Part 2", () => {
-  xtest("degenerate case", () => {
-    expect(solutionB("")).toBe(false);
-  });
-
-  xtest("simple case", () => {
-    expect(solutionB("")).toBe(false);
-  });
-
-  xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(42);
+  test("Official Solution - Part 2", () => {
+    expect(solution(officialInput, { winner: "LAST" })).toBe(24628);
   });
 });
