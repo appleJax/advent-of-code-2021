@@ -2,12 +2,28 @@ type DrawnIndexes = Record<number, number>;
 
 export function solutionA(input: string) {
   const { boards, drawnIndexes, drawnNums } = parseInput(input);
+  const getWinningIndex = winningIndexFactory(drawnIndexes);
 
-  let minWinningIndex = Infinity;
+  try {
+    const winningIndexes = boards.map(getWinningIndex);
+    const { winningIndex, winningBoardIndex } =
+      getOverallWinner(winningIndexes);
 
-  const winningIndex = getWinningIndex(drawnIndexes)(boards[0]);
+    if (winningIndex === Infinity) {
+      return 0;
+    }
 
-  return 0;
+    console.log({ winningIndex, winningBoardIndex });
+
+    return getScore({
+      board: boards[winningBoardIndex],
+      drawnIndexes,
+      drawnNums,
+      winningIndex,
+    });
+  } catch {
+    return 0;
+  }
 }
 
 export function solutionB(input: string) {
@@ -33,7 +49,7 @@ export function parseInput(input: string) {
   };
 }
 
-export function getWinningIndex(drawnIndexes: DrawnIndexes) {
+export function winningIndexFactory(drawnIndexes: DrawnIndexes) {
   return (board: number[][]) => {
     let winningIndex = Infinity;
 
@@ -65,9 +81,38 @@ export function getWinningIndex(drawnIndexes: DrawnIndexes) {
 type GetScoreArgs = {
   board: number[][];
   drawnIndexes: DrawnIndexes;
+  drawnNums: number[];
   winningIndex: number;
 };
 
-export function getScore({ board, drawnIndexes, winningIndex }: GetScoreArgs) {
-  return 42;
+export function getScore({
+  board,
+  drawnIndexes,
+  drawnNums,
+  winningIndex,
+}: GetScoreArgs) {
+  const sumOfUndrawnNums = board.reduce((score, row) => {
+    const rowSum = row.reduce(
+      (sum, num) => (drawnIndexes[num] <= winningIndex ? sum : sum + num),
+      0
+    );
+    return score + rowSum;
+  }, 0);
+
+  return sumOfUndrawnNums * drawnNums[winningIndex];
+}
+
+export function getOverallWinner(winningIndexes: number[]) {
+  return winningIndexes.reduce(
+    (result, boardWinningIndex, index) => {
+      if (boardWinningIndex < result.winningIndex) {
+        return {
+          winningIndex: boardWinningIndex,
+          winningBoardIndex: index,
+        };
+      }
+      return result;
+    },
+    { winningIndex: Infinity, winningBoardIndex: Infinity }
+  );
 }
