@@ -13,8 +13,6 @@ export function solutionA(input: string) {
       return 0;
     }
 
-    console.log({ winningIndex, winningBoardIndex });
-
     return getScore({
       board: boards[winningBoardIndex],
       drawnIndexes,
