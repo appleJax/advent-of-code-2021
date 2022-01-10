@@ -1,5 +1,11 @@
+const pipe =
+  (...fns: ((...args: any[]) => unknown)[]) =>
+  (initialArg: unknown) =>
+    fns.reduce((res, f) => f(res), initialArg);
+
 export function solutionA(input: string[]) {
-  return 2;
+  const calcAnswer = pipe(parseInput, filterInput, buildGrid, countOverlap);
+  return calcAnswer(input);
 }
 
 export function solutionB(input: string[]) {

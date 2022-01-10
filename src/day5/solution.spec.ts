@@ -13,6 +13,22 @@ const officialInput = fs
   .readFileSync(path.resolve(__dirname, "input.txt"), "utf-8")
   .split("\n");
 
+/*
+ *  Representation of parsedInput
+ *
+ *  [
+ *    [0,0,0,0,0,0,0,0,0],
+ *    [1,0,0,0,0,0,0,0,0],
+ *    [1,0,0,0,0,0,0,0,0],
+ *    [1,0,0,0,0,0,0,0,0],
+ *    [0,0,2,1,1,1,0,0,0],
+ *    [0,0,1,0,0,0,0,0,0],
+ *    [0,0,1,0,0,0,0,0,0],
+ *    [0,0,0,0,0,0,0,0,0],
+ *    [0,0,1,1,1,0,0,0,0],
+ *  ]
+ */
+
 const parsedInput = [
   [
     [2, 4],
@@ -27,8 +43,8 @@ const parsedInput = [
     [0, 3],
   ],
   [
-    [2, 7],
-    [2, 5],
+    [2, 6],
+    [2, 4],
   ],
   [
     [2, 7],
@@ -36,17 +52,17 @@ const parsedInput = [
   ],
 ];
 
+const rawInput = [
+  "2,4 -> 5,4",
+  "4,8 -> 2,8",
+  "0,1 -> 0,3",
+  "2,6 -> 2,4",
+  "2,7 -> 5,3",
+];
+
 describe("helpers", () => {
   test("parseInput", () => {
-    const input = [
-      "2,4 -> 5,4",
-      "4,8 -> 2,8",
-      "0,1 -> 0,3",
-      "2,7 -> 2,5",
-      "2,7 -> 5,3",
-    ];
-
-    expect(parseInput(input)).toEqual(parsedInput);
+    expect(parseInput(rawInput)).toEqual(parsedInput);
   });
 
   test("filterInput - filters out diagonal lines", () => {
@@ -76,10 +92,9 @@ describe("helpers", () => {
 
     grid[5] = [];
     grid[6] = [];
-    grid[7] = [];
+    grid[4][2] = 2;
     grid[5][2] = 1;
     grid[6][2] = 1;
-    grid[7][2] = 1;
 
     expect(buildGrid(parsedInput.slice(0, -1))).toEqual(grid);
   });
@@ -101,17 +116,16 @@ describe("helpers", () => {
 });
 
 describe("Day 5 - Part 1", () => {
-  xtest("degenerate case", () => {
-    expect(solutionA([])).toBe(0);
-    expect(solutionA([])).toBe(0);
-  });
-
-  xtest("simple case", () => {
+  test("degenerate case", () => {
     expect(solutionA([])).toBe(0);
   });
 
-  xtest("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(42);
+  test("simple case", () => {
+    expect(solutionA(rawInput)).toBe(1);
+  });
+
+  test("Official Solution - Part 1", () => {
+    expect(solutionA(officialInput)).toBe(5774);
   });
 });
 
