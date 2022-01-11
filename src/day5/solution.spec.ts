@@ -1,13 +1,6 @@
 import path from "path";
 import fs from "fs";
-import {
-  buildGrid,
-  countOverlap,
-  filterInput,
-  parseInput,
-  solutionA,
-  solutionB,
-} from "./solution";
+import { buildGrid, countOverlap, parseInput, solution } from "./solution";
 
 const officialInput = fs
   .readFileSync(path.resolve(__dirname, "input.txt"), "utf-8")
@@ -21,10 +14,10 @@ const officialInput = fs
  *    [1,0,0,0,0,0,0,0,0],
  *    [1,0,0,0,0,0,0,0,0],
  *    [1,0,0,0,0,0,0,0,0],
- *    [0,0,2,1,1,1,0,0,0],
+ *    [0,0,2,1,1,2,0,0,0],
+ *    [0,0,1,0,1,0,0,0,0],
+ *    [0,0,1,1,0,0,0,0,0],
  *    [0,0,1,0,0,0,0,0,0],
- *    [0,0,1,0,0,0,0,0,0],
- *    [0,0,0,0,0,0,0,0,0],
  *    [0,0,1,1,1,0,0,0,0],
  *  ]
  */
@@ -48,7 +41,7 @@ const parsedInput = [
   ],
   [
     [2, 7],
-    [5, 3],
+    [5, 4],
   ],
 ];
 
@@ -57,16 +50,12 @@ const rawInput = [
   "4,8 -> 2,8",
   "0,1 -> 0,3",
   "2,6 -> 2,4",
-  "2,7 -> 5,3",
+  "2,7 -> 5,4",
 ];
 
 describe("helpers", () => {
   test("parseInput", () => {
     expect(parseInput(rawInput)).toEqual(parsedInput);
-  });
-
-  test("filterInput - filters out diagonal lines", () => {
-    expect(filterInput(parsedInput)).toEqual(parsedInput.slice(0, -1));
   });
 
   test("buildGrid", () => {
@@ -96,7 +85,7 @@ describe("helpers", () => {
     grid[5][2] = 1;
     grid[6][2] = 1;
 
-    expect(buildGrid(parsedInput.slice(0, -1))).toEqual(grid);
+    expect(buildGrid()(parsedInput.slice(0, -1))).toEqual(grid);
   });
 
   test("countOverlap", () => {
@@ -117,28 +106,28 @@ describe("helpers", () => {
 
 describe("Day 5 - Part 1", () => {
   test("degenerate case", () => {
-    expect(solutionA([])).toBe(0);
+    expect(solution([])).toBe(0);
   });
 
   test("simple case", () => {
-    expect(solutionA(rawInput)).toBe(1);
+    expect(solution(rawInput)).toBe(1);
   });
 
   test("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(5774);
+    expect(solution(officialInput)).toBe(5774);
   });
 });
 
 describe("Day 5 - Part 2", () => {
-  xtest("degenerate case", () => {
-    expect(solutionB([])).toBe(0);
+  test("degenerate case", () => {
+    expect(solution([], { countDiagonals: true })).toBe(0);
   });
 
-  xtest("simple case", () => {
-    expect(solutionB([])).toBe(0);
+  test("simple case", () => {
+    expect(solution(rawInput, { countDiagonals: true })).toBe(2);
   });
 
-  xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(42);
+  test("Official Solution - Part 2", () => {
+    expect(solution(officialInput, { countDiagonals: true })).toBe(18423);
   });
 });
