@@ -1,29 +1,3 @@
-#! /bin/bash
-
-RE='^[0-9]+$';
-if ! [[ $1 =~ $RE ]] ; then
-  echo "Argument Error: expected a number";
-  echo "To create a Day3 directory: ./newday.sh 3";
-  exit 1;
-fi
-
-NEWDIR="src/day$1";
-mkdir $NEWDIR;
-
-touch "${NEWDIR}/input.txt";
-
-cat > "${NEWDIR}/solution.ts" <<- EOM
-export function solutionA(input: unknown[]) {
-  return input;
-}
-
-export function solutionB(input: unknown[]) {
-  return input;
-}
-
-EOM
-
-cat > "${NEWDIR}/solution.spec.ts" <<- EOM
 import path from "path";
 import fs from "fs";
 import { solutionA, solutionB } from "./solution";
@@ -32,7 +6,7 @@ const officialInput = fs
   .readFileSync(path.resolve(__dirname, "input.txt"), "utf-8")
   .split("\n");
 
-describe("Day $1 - Part 1", () => {
+describe("Day 6 - Part 1", () => {
   test("degenerate case", () => {
     expect(solutionA([])).toBe(false);
   });
@@ -42,11 +16,11 @@ describe("Day $1 - Part 1", () => {
   });
 
   xtest("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(false);
+    expect(solutionA(officialInput)).toBe(42);
   });
 });
 
-describe("Day $1 - Part 2", () => {
+describe("Day 6 - Part 2", () => {
   xtest("degenerate case", () => {
     expect(solutionB([])).toBe(false);
   });
@@ -56,8 +30,7 @@ describe("Day $1 - Part 2", () => {
   });
 
   xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(false);
+    expect(solutionB(officialInput)).toBe(42);
   });
 });
 
-EOM
