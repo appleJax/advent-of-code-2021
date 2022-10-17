@@ -1,5 +1,5 @@
 const pipe =
-  (...fns: ((...args: any[]) => unknown)[]) =>
+  (...fns: ((..._args: any[]) => unknown)[]) =>
   (initialArg: unknown) =>
     fns.reduce((res, fn) => fn(res), initialArg);
 

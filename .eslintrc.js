@@ -2,15 +2,19 @@ module.exports = {
   env: {
     es2021: true,
     jest: true,
+    node: true,
   },
   ignorePatterns: [
     "**/*.ico",
     "**/*.svg",
-    "yarn.lock",
+    "**/*.lock",
     "**/*.log",
     "**/*.json",
     "**/*.md",
     "**/*.mp4",
+    "**/*.txt",
+    "**/*.yaml",
+    "**/*.sh",
   ],
   settings: {
     "import/resolver": {
@@ -19,7 +23,7 @@ module.exports = {
       },
     },
   },
-  extends: ["airbnb", "prettier"],
+  extends: ["eslint:recommended", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 12,
@@ -32,10 +36,11 @@ module.exports = {
     "import/extensions": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "import/no-extraneous-dependencies": [
+    "no-unused-vars": [
       "error",
       {
-        devDependencies: ["**/*.spec.ts"],
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
       },
     ],
   },

@@ -6,9 +6,9 @@ const officialInput = fs
   .readFileSync(path.resolve(__dirname, "input.txt"), "utf-8")
   .split("\n");
 
-describe("Day 6 - Part 1", () => {
+describe("Day 7 - Part 1", () => {
   test("degenerate case", () => {
-    expect(solutionA([], 5)).toBe(0);
+    expect(solutionA([])).toBe(false);
   });
 
   xtest("simple case", () => {
@@ -16,11 +16,11 @@ describe("Day 6 - Part 1", () => {
   });
 
   xtest("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(42);
+    expect(solutionA(officialInput)).toBe(false);
   });
 });
 
-describe("Day 6 - Part 2", () => {
+describe("Day 7 - Part 2", () => {
   xtest("degenerate case", () => {
     expect(solutionB([])).toBe(false);
   });
@@ -30,6 +30,6 @@ describe("Day 6 - Part 2", () => {
   });
 
   xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(42);
+    expect(solutionB(officialInput)).toBe(false);
   });
 });

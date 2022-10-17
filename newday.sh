@@ -10,6 +10,7 @@ fi
 NEWDIR="src/day$1";
 mkdir $NEWDIR;
 
+touch "${NEWDIR}/README.md";
 touch "${NEWDIR}/input.txt";
 
 cat > "${NEWDIR}/solution.ts" <<- EOM
