@@ -1,7 +1,7 @@
-export function solutionA(input: unknown[]) {
-  return input;
+export function solutionA(initialState: unknown[], days: number) {
+  return days;
 }
 
-export function solutionB(input: unknown[]) {
-  return input;
+export function solutionB(initialState: unknown[], days: number) {
+  return days;
 }

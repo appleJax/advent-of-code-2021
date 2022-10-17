@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    es2021: true,
     jest: true,
     node: true,
   },
@@ -26,7 +25,7 @@ module.exports = {
   extends: ["eslint:recommended", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 12,
+    ecmaVersion: "latest",
     sourceType: "module",
   },
   plugins: ["prettier", "@typescript-eslint"],

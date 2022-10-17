@@ -12,24 +12,24 @@ describe("Day 6 - Part 1", () => {
   });
 
   xtest("simple case", () => {
-    expect(solutionA([])).toBe(false);
+    expect(solutionA([], 1)).toBe(false);
   });
 
   xtest("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(42);
+    expect(solutionA(officialInput, 5)).toBe(42);
   });
 });
 
 describe("Day 6 - Part 2", () => {
   xtest("degenerate case", () => {
-    expect(solutionB([])).toBe(false);
+    expect(solutionB([], 0)).toBe(false);
   });
 
   xtest("simple case", () => {
-    expect(solutionB([])).toBe(false);
+    expect(solutionB([], 1)).toBe(false);
   });
 
   xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(42);
+    expect(solutionB(officialInput, 5)).toBe(42);
   });
 });
