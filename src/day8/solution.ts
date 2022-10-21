@@ -107,33 +107,7 @@ function getTranslationKey(patterns: string[]) {
     }
   }
 
-  const doubleMatchedWires = Object.values(translationKey).reduce<string[]>(
-    (matches, possibilities) => {
-      if (possibilities.length === 2) {
-        const wires = possibilities.join("");
-        if (!matches.includes(wires)) {
-          matches.push(wires);
-        }
-      }
-      return matches;
-    },
-    []
-  );
-
-  const doubleMatches = doubleMatchedWires.map((wires) => {
-    const match: { from: Wire[]; to: Wire[] } = {
-      from: [],
-      to: wires.split("") as Wire[],
-    };
-
-    WIRES.forEach((w) => {
-      if (translationKey[w].join("") === wires) {
-        match.from.push(w);
-      }
-    });
-
-    return match;
-  });
+  const doubleMatches = getDoubleMatches(translationKey);
 
   doubleMatches.forEach(({ from, to }) => {
     const checkPatterns = patterns.filter(
@@ -175,6 +149,36 @@ function getTranslationKey(patterns: string[]) {
   });
 
   return translationKey;
+}
+
+function getDoubleMatches(translationKey: TranslationKey) {
+  const doubleMatchedWires = Object.values(translationKey).reduce<string[]>(
+    (matches, possibilities) => {
+      if (possibilities.length === 2) {
+        const wires = possibilities.join("");
+        if (!matches.includes(wires)) {
+          matches.push(wires);
+        }
+      }
+      return matches;
+    },
+    []
+  );
+
+  return doubleMatchedWires.map((wires) => {
+    const match: { from: Wire[]; to: Wire[] } = {
+      from: [],
+      to: wires.split("") as Wire[],
+    };
+
+    WIRES.forEach((w) => {
+      if (translationKey[w].join("") === wires) {
+        match.from.push(w);
+      }
+    });
+
+    return match;
+  });
 }
 
 function decodeOutput(outputDigits: string[], translationKey: TranslationKey) {
