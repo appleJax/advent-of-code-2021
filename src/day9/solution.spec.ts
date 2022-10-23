@@ -41,15 +41,37 @@ describe("Day 9 - Part 1", () => {
 });
 
 describe("Day 9 - Part 2", () => {
-  xtest("degenerate case", () => {
-    expect(solutionB([])).toBe(false);
+  test("degenerate case", () => {
+    expect(solutionB([])).toBe(0);
+    expect(solutionB([[9, 9, 9]])).toBe(0);
   });
 
-  xtest("simple case", () => {
-    expect(solutionB([])).toBe(false);
+  test("simple case", () => {
+    expect(solutionB([[9, 0, 9]])).toBe(1);
+    expect(solutionB([[9, 0, 1]])).toBe(2);
+    expect(
+      solutionB([
+        [9, 0, 3, 4],
+        [5, 4, 2, 2],
+        [1, 0, 2, 0],
+        [2, 9, 1, 9],
+      ])
+    ).toBe(40);
   });
 
-  xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(false);
+  test("complex case", () => {
+    expect(
+      solutionB([
+        [2, 1, 9, 9, 9, 4, 3, 2, 1, 0],
+        [3, 9, 8, 7, 8, 9, 4, 9, 2, 1],
+        [9, 8, 5, 6, 7, 8, 9, 8, 9, 2],
+        [8, 7, 6, 7, 8, 9, 6, 7, 8, 9],
+        [9, 8, 9, 9, 9, 6, 5, 6, 7, 8],
+      ])
+    ).toBe(1134);
+  });
+
+  test("Official Solution - Part 2", () => {
+    expect(solutionB(officialInput)).toBe(1071000);
   });
 });
