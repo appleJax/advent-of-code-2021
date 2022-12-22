@@ -4,11 +4,12 @@ import { solutionA, solutionB } from "./solution";
 
 const officialInput = fs
   .readFileSync(path.resolve(__dirname, "input.txt"), "utf-8")
-  .split("\n");
+  .split("\n")
+  .map((line) => line.split("").map(Number));
 
 describe("Day 11 - Part 1", () => {
   test("degenerate case", () => {
-    expect(solutionA([])).toBe(false);
+    expect(solutionA([[]])).toBe(0);
   });
 
   xtest("simple case", () => {

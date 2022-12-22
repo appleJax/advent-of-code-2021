@@ -29,15 +29,20 @@ describe("Day 10 - Part 1", () => {
 });
 
 describe("Day 10 - Part 2", () => {
-  xtest("degenerate case", () => {
-    expect(solutionB([])).toBe(false);
+  test("degenerate case", () => {
+    expect(solutionB([])).toBe(0);
+    expect(solutionB(["", "()>"])).toBe(0);
   });
 
-  xtest("simple case", () => {
-    expect(solutionB([])).toBe(false);
+  test("simple case", () => {
+    expect(solutionB(["[({(<(())[]>[[{[]{<()<>>"])).toBe(288957);
+    expect(solutionB(["[(()[<>])]({[<{<<[]>>("])).toBe(5566);
+    expect(solutionB(["(((({<>}<{<{<>}{[]{[]{}"])).toBe(1480781);
+    expect(solutionB(["{<[[]]>}<{[{[{[]{()[[[]"])).toBe(995444);
+    expect(solutionB(["<{([{{}}[<[[[<>{}]]]>[]]"])).toBe(294);
   });
 
-  xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(false);
+  test("Official Solution - Part 2", () => {
+    expect(solutionB(officialInput)).toBe(3490802734);
   });
 });

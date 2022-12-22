@@ -1,19 +1,17 @@
-type Maybe<T> = T | null;
-
 const startChars = ["(", "[", "{", "<"];
 
 type StartChar = "(" | "[" | "{" | "<";
 type EndChar = ")" | "]" | "}" | ">";
 type ChunkChar = StartChar | EndChar;
 
-const PAIR: Record<EndChar, StartChar> = {
+const END_TO_START: Record<EndChar, StartChar> = {
   ")": "(",
   "]": "[",
   "}": "{",
   ">": "<",
 };
 
-const POINTS: Record<EndChar, number> = {
+const ILLEGAL_CHAR_POINTS: Record<EndChar, number> = {
   ")": 3,
   "]": 57,
   "}": 1197,
@@ -24,28 +22,93 @@ function isStartChar(char: string): char is StartChar {
   return startChars.includes(char);
 }
 
-function findIllegalChar(chunk: ChunkChar[]): Maybe<EndChar> {
-  const stack: string[] = [];
+type IllegalResult = {
+  illegalChar: EndChar;
+};
 
-  for (const char of chunk) {
+type IncompleteResult = {
+  charStack: StartChar[];
+};
+
+type ChunkResult = IllegalResult | IncompleteResult;
+
+function splitChunk(chunk: string) {
+  if (/[^()[\]{}<>]/.test(chunk)) {
+    throw new Error(`Chunk contains invalid characters: ${chunk}`);
+  }
+  return chunk.split("") as ChunkChar[];
+}
+
+function analyzeChunk(chunk: string): ChunkResult {
+  const chunkChars = splitChunk(chunk);
+  const charStack: StartChar[] = [];
+
+  for (const char of chunkChars) {
     if (isStartChar(char)) {
-      stack.push(char);
-    } else if (stack.pop() !== PAIR[char]) {
-      return char;
+      charStack.push(char);
+    } else if (charStack.pop() !== END_TO_START[char]) {
+      return {
+        illegalChar: char,
+      };
     }
   }
 
-  return null;
+  return {
+    charStack,
+  };
 }
 
 export function solutionA(chunks: string[]) {
   return chunks.reduce((totalPoints, chunk) => {
-    const illegalChar = findIllegalChar(chunk.split("") as ChunkChar[]);
-    const points = illegalChar ? POINTS[illegalChar] : 0;
+    const result = analyzeChunk(chunk);
+    const points =
+      "illegalChar" in result ? ILLEGAL_CHAR_POINTS[result.illegalChar] : 0;
     return totalPoints + points;
   }, 0);
 }
 
-export function solutionB(_input: string[]) {
-  return 0;
+const START_TO_END: Record<StartChar, EndChar> = {
+  "(": ")",
+  "[": "]",
+  "{": "}",
+  "<": ">",
+};
+
+const INCOMPLETE_CHAR_POINTS: Record<EndChar, number> = {
+  ")": 1,
+  "]": 2,
+  "}": 3,
+  ">": 4,
+};
+
+export function solutionB(chunks: string[]) {
+  const sortedScores = chunks.reduce<number[]>((sorted, chunk) => {
+    const result = analyzeChunk(chunk);
+    if ("illegalChar" in result) {
+      return sorted;
+    }
+
+    let points = 0;
+    let startChar = result.charStack.pop();
+    while (startChar) {
+      const missingChar = START_TO_END[startChar];
+      points *= 5;
+      points += INCOMPLETE_CHAR_POINTS[missingChar];
+
+      startChar = result.charStack.pop();
+    }
+
+    const firstLesserScore = sorted.findIndex((score) => score < points);
+    if (firstLesserScore === -1) {
+      sorted.push(points);
+    } else {
+      sorted.splice(firstLesserScore, 0, points);
+    }
+
+    return sorted;
+  }, []);
+
+  const middleIndex = Math.floor(sortedScores.length / 2);
+
+  return sortedScores[middleIndex] || 0;
 }
