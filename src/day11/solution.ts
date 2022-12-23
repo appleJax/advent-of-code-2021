@@ -75,8 +75,6 @@ export function tick() {
       }
     });
   });
-
-  resetFlashedCells();
 }
 
 export function solutionA(grid: EnergyGrid) {
@@ -85,11 +83,22 @@ export function solutionA(grid: EnergyGrid) {
   let iterations = 100;
   while (iterations-- > 0) {
     tick();
+    resetFlashedCells();
   }
 
   return FLASHES;
 }
 
-export function solutionB(_input: EnergyGrid) {
-  return 0;
+export function solutionB(grid: EnergyGrid) {
+  init(grid);
+  const totalCells = grid.length * (grid[0]?.length || 0);
+
+  let iterations = 0;
+  while (++iterations) {
+    tick();
+    if (FLASHED.size === totalCells) {
+      return iterations;
+    }
+    resetFlashedCells();
+  }
 }

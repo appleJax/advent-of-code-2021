@@ -36,15 +36,7 @@ describe("Day 11 - Part 1", () => {
 });
 
 describe("Day 11 - Part 2", () => {
-  xtest("degenerate case", () => {
-    expect(solutionB([])).toBe(false);
-  });
-
-  xtest("simple case", () => {
-    expect(solutionB([])).toBe(false);
-  });
-
-  xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(false);
+  test("Official Solution - Part 2", () => {
+    expect(solutionB(officialInput)).toBe(227);
   });
 });
