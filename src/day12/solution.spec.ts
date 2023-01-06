@@ -8,28 +8,32 @@ const officialInput = fs
 
 describe("Day 12 - Part 1", () => {
   test("degenerate case", () => {
-    expect(solutionA([])).toBe(false);
+    expect(solutionA([])).toBe(0);
   });
 
-  xtest("simple case", () => {
-    expect(solutionA([])).toBe(false);
+  test("simple case", () => {
+    expect(
+      solutionA(["start-A", "start-b", "A-c", "A-b", "b-d", "A-end", "b-end"])
+    ).toBe(10);
   });
 
-  xtest("Official Solution - Part 1", () => {
-    expect(solutionA(officialInput)).toBe(false);
+  test("Official Solution - Part 1", () => {
+    expect(solutionA(officialInput)).toBe(4104);
   });
 });
 
 describe("Day 12 - Part 2", () => {
-  xtest("degenerate case", () => {
-    expect(solutionB([])).toBe(false);
+  test("degenerate case", () => {
+    expect(solutionB([])).toBe(0);
   });
 
-  xtest("simple case", () => {
-    expect(solutionB([])).toBe(false);
+  test("simple case", () => {
+    expect(
+      solutionB(["start-A", "start-b", "A-c", "A-b", "b-d", "A-end", "b-end"])
+    ).toBe(36);
   });
 
-  xtest("Official Solution - Part 2", () => {
-    expect(solutionB(officialInput)).toBe(false);
+  test("Official Solution - Part 2", () => {
+    expect(solutionB(officialInput)).toBe(119760);
   });
 });
