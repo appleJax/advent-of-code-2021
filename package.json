@@ -6,7 +6,7 @@
     "test": "jest",
     "lint": "eslint --fix",
     "format": "prettier --write",
-    "typecheck": "tsc --noEmit --esModuleInterop --target es2015 --moduleResolution node",
+    "typecheck": "tsc --noEmit --esModuleInterop --target ESNext --moduleResolution node",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },

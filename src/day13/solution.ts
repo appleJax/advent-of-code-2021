@@ -1,22 +1,16 @@
 export function solutionA(input: string[]) {
   const { dots, folds } = parseInput(input);
-
-  const firstFold = folds[0];
-  const axis = Object.keys(firstFold)[0] as "x" | "y";
-  const lineNum: number = Object.values(firstFold)[0];
-
-  dots.forEach((dot) => {
-    if (dot[axis] > lineNum) {
-      const diff = dot[axis] - lineNum;
-      dot[axis] = lineNum - diff;
-    }
-  });
-
+  dots.forEach((dot) => foldDot(dot, folds[0]));
   return new Set(dots.map((coord) => JSON.stringify(coord))).size;
 }
 
-export function solutionB(_input: string[]) {
-  return 0;
+export function solutionB(input: string[]) {
+  const { dots, folds } = parseInput(input);
+  folds.forEach((fold) => {
+    dots.forEach((dot) => foldDot(dot, fold));
+  });
+
+  return printDots(dots);
 }
 
 type Coord = {
@@ -69,4 +63,34 @@ function parseFold(line: string): Fold {
   return {
     [axis]: Number(lineNum),
   } as unknown as Fold;
+}
+
+function foldDot(dot: Coord, fold: Fold) {
+  const axis = Object.keys(fold)[0] as "x" | "y";
+  const lineNum: number = Object.values(fold)[0];
+
+  if (dot[axis] > lineNum) {
+    const diff = dot[axis] - lineNum;
+    dot[axis] = lineNum - diff;
+  }
+}
+
+function printDots(dots: Coord[]) {
+  const size = getPaperSize(dots);
+  const printOut = Array(size.y + 1)
+    .fill(null)
+    .map((_) => Array(size.x + 1).fill("."));
+  dots.forEach(({ x, y }) => (printOut[y][x] = "#"));
+
+  return printOut.map((line) => line.join("")).join("\n");
+}
+
+function getPaperSize(dots: Coord[]) {
+  return dots.reduce<Coord>(
+    (size, dot) => ({
+      x: Math.max(size.x, dot.x),
+      y: Math.max(size.y, dot.y),
+    }),
+    { x: 0, y: 0 }
+  );
 }
